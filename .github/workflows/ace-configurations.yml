@@ -7,8 +7,12 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '**-generated*'
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '**-generated*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,7 +32,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          gh help
-          git help
-          echo test, and deploy your project.
+          echo Creating or changing a file and trying to push a commit
+          date > test-file.txt
+          git status
+          git remote -v
+          git add . && git commit -m "Generator commit" && git push
