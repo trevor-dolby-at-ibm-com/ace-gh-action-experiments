@@ -34,9 +34,11 @@ jobs:
         #env: 
         #  GH_TOKEN: ${{ github.token }} 
         run: |
+          #!/bin/bash
+          
           echo Creating a new directory
-          mkdir /tmp/new-checkout
-          cd /tmp/new-checkout
+          mkdir new-checkout
+          cd new-checkout
           set -x
           
           git config --global user.email "trevor.dolby@ibm.com"
@@ -46,6 +48,8 @@ jobs:
           echo ${{ secrets.GH_PAT }} | gh auth login --with-token
           gh auth setup-git
           git clone -b ${GITHUB_REF_NAME} https://github.com/${GITHUB_REPOSITORY}
+          export REPO_NAME=$(basename `echo $GITHUB_REPOSITORY`)
+          cd $REPO_NAME
           echo Creating or changing a file and trying to push a commit
           date > test-file.txt
           git status
