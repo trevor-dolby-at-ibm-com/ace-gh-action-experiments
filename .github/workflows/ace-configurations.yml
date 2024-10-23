@@ -51,7 +51,10 @@ jobs:
           export REPO_NAME=$(basename `echo $GITHUB_REPOSITORY`)
           cd $REPO_NAME
           echo Creating or changing a file and trying to push a commit
-          date > test-file.txt
+          date > test-file-generated.txt
           git status
           git remote -v
-          git add . && git commit -m "Generator commit" && git push 
+          export DATE=$(date '+%Y%m%d%H%M%S')
+          export COMMIT=$(git log -1 --pretty=%h)
+          export TAG="$DATE"-"$COMMIT"
+          git add . && git commit -m "Generator commit $TAG" && git push 
