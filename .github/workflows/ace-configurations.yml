@@ -50,11 +50,19 @@ jobs:
           git clone -b ${GITHUB_REF_NAME} https://github.com/${GITHUB_REPOSITORY}
           export REPO_NAME=$(basename `echo $GITHUB_REPOSITORY`)
           cd $REPO_NAME
-          echo Creating or changing a file and trying to push a commit
-          date > test-file-generated.txt
-          git status
-          git remote -v
-          export DATE=$(date '+%Y%m%d%H%M%S')
-          export COMMIT=$(git log -1 --pretty=%h)
-          export TAG="$DATE"-"$COMMIT"
-          git add . && git commit -m "Generator commit $TAG" && git push 
+
+          ./find-and-convert-policies.sh
+          ./find-and-convert-serverconf.sh
+
+          # Check to see if anything changed
+          if [ `git status --porcelain=1 | grep generated | wc -l` -ne 0 ]; then
+            echo Generated files changed; creating and pushing git commit
+            git status
+            git remote -v
+            export DATE=$(date '+%Y%m%d%H%M%S')
+            export COMMIT=$(git log -1 --pretty=%h)
+            export TAG="$DATE"-"$COMMIT"
+            git add . && git commit -m "Generator commit $TAG" && git push 
+          else
+            echo Nothing new generated; not creating a new git commit
+          fi
