@@ -35,8 +35,8 @@ jobs:
         #  GH_TOKEN: ${{ github.token }} 
         run: |
           echo Creating a new directory
-          mkdir new-checkout
-          cd new-checkout
+          mkdir /tmp/new-checkout
+          cd /tmp/new-checkout
           set -x
           
           git config --global user.email "trevor.dolby@ibm.com"
