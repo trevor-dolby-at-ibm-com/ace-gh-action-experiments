@@ -56,7 +56,7 @@ jobs:
 
           # Check to see if anything changed
           if [ `git status --porcelain=1 | grep generated | wc -l` -ne 0 ]; then
-            echo Generated files changed; creating and pushing git commit
+            echo "Generated files changed - creating and pushing git commit"
             git status
             git remote -v
             export DATE=$(date '+%Y%m%d%H%M%S')
@@ -64,5 +64,5 @@ jobs:
             export TAG="$DATE"-"$COMMIT"
             git add . && git commit -m "Generator commit $TAG" && git push 
           else
-            echo Nothing new generated; not creating a new git commit
+            echo "Nothing new generated - not creating a new git commit"
           fi
