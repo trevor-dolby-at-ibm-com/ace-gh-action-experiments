@@ -33,7 +33,11 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Creating or changing a file and trying to push a commit
+          set -x
           date > test-file.txt
           git status
           git remote -v
+          
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
           git add . && git commit -m "Generator commit" && git push
