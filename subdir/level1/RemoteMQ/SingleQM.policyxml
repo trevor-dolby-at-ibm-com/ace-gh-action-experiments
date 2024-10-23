@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policies>
+  <policy policyType="MQEndpoint" policyName="SingleQM" policyTemplate="MQEndpoint">
+    <connection>CLIENT</connection>
+    <destinationQueueManagerName>FTEQM</destinationQueueManagerName>
+    <queueManagerHostname>10.0.0.2</queueManagerHostname>
+    <listenerPortNumber>11003</listenerPortNumber>
+    <channelName>SYSTEM.DEF.SVRCONN</channelName>
+    <securityIdentity></securityIdentity>
+    <useSSL>false</useSSL>
+    <SSLPeerName></SSLPeerName>
+    <SSLCipherSpec></SSLCipherSpec>
+    <CCDTUrl></CCDTUrl>
+    <SSLCertificateLabel></SSLCertificateLabel>
+    <MQApplName></MQApplName>
+    <reconnectOption>disabled</reconnectOption>
+  </policy>
+</policies>

@@ -1,0 +1,12 @@
+---
+defaultQueueManager: 'FTEQM'
+Monitoring:
+  MessageFlow:
+    publicationOn: 'active'
+    eventFormat: 'MonitoringEventV2'  # When BusinessEvents.-.outputFormat is xml set MonitoringEventV2 or WMB, default MonitoringEventV2
+Events:
+  BusinessEvents: # Monitoring events
+    MQ:
+      enabled: true            # Set true or false, default false
+      format: 'MonitoringEventV2'                # Set string or none
+      outputFormat: 'xml'       # Set comma separated list of one or more of : json,xml. Defaults to 'xml'

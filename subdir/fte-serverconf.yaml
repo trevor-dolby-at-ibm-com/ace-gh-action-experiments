@@ -1,0 +1,7 @@
+---
+remoteDefaultQueueManager: '{MQPolicies}:FTEQM'
+ResourceManagers:
+  FTEAgent:
+    coordinationQMgr: 'FTEQM'
+    agentConfigurationDirectory: '/tmp/git/ace-fte-nodes-example/files'
+    agentName: 'DEMOAGENT'
