@@ -46,4 +46,4 @@ jobs:
 
           #gh auth login
           
-          git add . && git commit -m "Generator commit" && git push
+          git add . && git commit -m "Generator commit" && git push https://trevor-dolby-at-ibm-com:${GH_TOKEN}@github.com/trevor-dolby-at-ibm-com/ace-gh-action-experiments
