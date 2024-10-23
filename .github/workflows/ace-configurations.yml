@@ -34,11 +34,10 @@ jobs:
         #env: 
         #  GH_TOKEN: ${{ github.token }} 
         run: |
-          echo Creating or changing a file and trying to push a commit
+          echo Creating a new directory
+          mkdir new-checkout
+          cd new-checkout
           set -x
-          date > test-file.txt
-          git status
-          git remote -v
           
           git config --global user.email "trevor.dolby@ibm.com"
           git config --global user.name "Trevor Dolby (automation)"
@@ -46,5 +45,9 @@ jobs:
 
           echo ${{ secrets.GH_PAT }} | gh auth login --with-token
           gh auth setup-git
-          env | sort
+          git clone -b ${GITHUB_REF_NAME} https://github.com/${GITHUB_REPOSITORY}
+          echo Creating or changing a file and trying to push a commit
+          date > test-file.txt
+          git status
+          git remote -v
           git add . && git commit -m "Generator commit" && git push 
