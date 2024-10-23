@@ -44,6 +44,6 @@ jobs:
           git config --global user.name "Trevor Dolby (automation)"
           git config --global --add --bool push.autoSetupRemote true
 
-          gh auth login
+          #gh auth login
           
           git add . && git commit -m "Generator commit" && git push
