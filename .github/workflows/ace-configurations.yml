@@ -29,4 +29,5 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
+          git help
           echo test, and deploy your project.
