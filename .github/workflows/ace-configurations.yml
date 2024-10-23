@@ -45,5 +45,6 @@ jobs:
           git config --global --add --bool push.autoSetupRemote true
 
           echo ${{ secrets.GH_PAT }} | gh auth login --with-token
+          gh auth setup-git
           #env | sort
           git add . && git commit -m "Generator commit" && git push 
