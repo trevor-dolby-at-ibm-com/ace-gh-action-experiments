@@ -1,0 +1,9 @@
+apiVersion: appconnect.ibm.com/v1beta1
+kind: Configuration
+metadata:
+  name: fte-serverconf
+spec:
+  contents: LS0tCnJlbW90ZURlZmF1bHRRdWV1ZU1hbmFnZXI6ICd7TVFQb2xpY2llc306RlRFUU0nClJlc291cmNlTWFuYWdlcnM6CiAgRlRFQWdlbnQ6CiAgICBjb29yZGluYXRpb25RTWdyOiAnRlRFUU0nCiAgICBhZ2VudENvbmZpZ3VyYXRpb25EaXJlY3Rvcnk6ICcvdG1wL2dpdC9hY2UtZnRlLW5vZGVzLWV4YW1wbGUvZmlsZXMnCiAgICBhZ2VudE5hbWU6ICdERU1PQUdFTlQnCg==
+  description: "fte-serverconf server.conf.yaml"
+  type: serverconf
+  version: 12.0.12-r1
