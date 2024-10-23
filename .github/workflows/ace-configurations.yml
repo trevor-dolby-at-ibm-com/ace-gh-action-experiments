@@ -46,5 +46,5 @@ jobs:
 
           echo ${{ secrets.GH_PAT }} | gh auth login --with-token
           gh auth setup-git
-          #env | sort
+          env | sort
           git add . && git commit -m "Generator commit" && git push 
