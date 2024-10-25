@@ -36,7 +36,7 @@ jobs:
           mkdir new-checkout
           cd new-checkout
           #set -x
-          env | sort
+          #nv | sort
           git config --global user.email "trevor.dolby@ibm.com"
           git config --global user.name "Trevor Dolby (automation)"
           git config --global --add --bool push.autoSetupRemote true
