@@ -73,7 +73,7 @@ jobs:
             export MSG="Generator commit $TAG"
             echo "########################################################################"
             echo "# Generated files changed - creating and pushing git commit:"
-            echo "# $MSG"
+            echo "# \"$MSG\""
             echo "########################################################################"
             git add . 
             git status
