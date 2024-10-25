@@ -41,14 +41,18 @@ jobs:
           git config --global user.name "Trevor Dolby (automation)"
           git config --global --add --bool push.autoSetupRemote true
 
+          export BRANCH_NAME=${GITHUB_HEAD_REF}
+          if [ "$BRANCH_NAME" == "" ]; then
+            export BRANCH_NAME="$GITHUB_REF_NAME"
+          fi
           echo "########################################################################"
           echo "# Cloning a new copy of the repo using the correct credentials"
           echo "# Repo    ${GITHUB_REPOSITORY}"
-          echo "# Branch  ${GITHUB_REF_NAME}"
+          echo "# Branch  ${BRANCH_NAME}"
           echo "########################################################################"
           echo ${{ secrets.GH_PAT }} | gh auth login --with-token
           gh auth setup-git
-          git clone -b ${GITHUB_REF_NAME} https://github.com/${GITHUB_REPOSITORY}
+          git clone -b ${BRANCH_NAME} https://github.com/${GITHUB_REPOSITORY}
           export REPO_NAME=$(basename `echo $GITHUB_REPOSITORY`)
           cd $REPO_NAME
 
