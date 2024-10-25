@@ -45,11 +45,17 @@ for policyFile in $POLICYFILES; do
   export generatedPolicyName=$(echo "${policyParentName}/${lcPolicyDirName}-policyproject-generated.yaml")
   export configurationName=$(echo "${lcPolicyDirName}-policyproject")
 
-  echo $policyDirName
-  echo $policyParentName
-  echo $lcPolicyDirName
-  echo $generatedPolicyName
-  echo $configurationName
+  # Expected values for various variables, starting from this repo 
+  # with the policy project in subdir/level1/RemoteMQ:
+  # 
+  # policyDirName=RemoteMQ
+  # policyParentName=subdir/level1
+  # lcPolicyDirName=remotemq
+  # generatedPolicyName=subdir/level1/remotemq-policyproject-generated.yaml
+  # configurationName=remotemq-policyproject
+
+
+
   # We only want to update the ZIP file if the contents of the files have changed (we don't
   # want to always create a new Configuration every time even if nothing has changed) but 
   # ZIP files contain the file timestamps so we can't just create a new ZIP file and compare
@@ -60,14 +66,17 @@ for policyFile in $POLICYFILES; do
   TMPDIR=`mktemp -d`
   if [ -e "$generatedPolicyName" ]; then
     echo "Configuration YAML $generatedPolicyName already exists; checking to see if it needs updating"
+    # Extract from YAML into a ZIP file; no obvious way to feed this into unzip via a pipe
     grep contents: $generatedPolicyName  | tr -d ' ' | sed 's/contents://g' | base64 -d > $TMPDIR/policies.zip
     unzip -d $TMPDIR $TMPDIR/policies.zip
     rm $TMPDIR/policies.zip
+    # Scan the existing (previous) ZIP file contents and check against current
     OLDPOLICYFILES=$(cd $TMPDIR && find * -type f -print)
     for oldPolicyFile in $OLDPOLICYFILES; do
       echo "Checking $TMPDIR/$oldPolicyFile against ${policyParentName}/$oldPolicyFile"
-      # Check to see if the file in the old ZIP exists
+      # Check to see if the file in the old ZIP exists now
       if [ -e "${policyParentName}/$oldPolicyFile" ]; then
+        # Diff the files to see if they match
         diff "$TMPDIR/$oldPolicyFile" "${policyParentName}/$oldPolicyFile"
         if [ "$?" == "0" ]; then
           echo "  $oldPolicyFile unchanged"
@@ -92,6 +101,7 @@ for policyFile in $POLICYFILES; do
     fi
     rm -rf $TMPDIR
   else
+    # If there's no generated file, then we must be creating new
     echo "Configuration YAML $generatedPolicyName not found"
     policyHasChanged=1
   fi
