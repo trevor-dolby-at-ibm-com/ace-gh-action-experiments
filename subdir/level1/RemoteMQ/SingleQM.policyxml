@@ -13,6 +13,6 @@
     <CCDTUrl></CCDTUrl>
     <SSLCertificateLabel></SSLCertificateLabel>
     <MQApplName></MQApplName>
-    <reconnectOption>disabled</reconnectOption>
+    <reconnectOption></reconnectOption>
   </policy>
 </policies>
