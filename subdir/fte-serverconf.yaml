@@ -1,5 +1,6 @@
 ---
 remoteDefaultQueueManager: '{MQPolicies}:FTEQM'
+# Change
 ResourceManagers:
   FTEAgent:
     coordinationQMgr: 'FTEQM'
