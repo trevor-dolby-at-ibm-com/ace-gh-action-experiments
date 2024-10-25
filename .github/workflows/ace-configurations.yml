@@ -39,31 +39,48 @@ jobs:
           echo Creating a new directory
           mkdir new-checkout
           cd new-checkout
-          set -x
+          #set -x
           
           git config --global user.email "trevor.dolby@ibm.com"
           git config --global user.name "Trevor Dolby (automation)"
           git config --global --add --bool push.autoSetupRemote true
 
+          echo "########################################################################"
+          echo "# Cloning a new copy of the repo using the correct credentials"
+          echo "# Repo    ${GITHUB_REPOSITORY}"
+          echo "# Branch  ${GITHUB_REF_NAME}"
+          echo "########################################################################"
           echo ${{ secrets.GH_PAT }} | gh auth login --with-token
           gh auth setup-git
           git clone -b ${GITHUB_REF_NAME} https://github.com/${GITHUB_REPOSITORY}
           export REPO_NAME=$(basename `echo $GITHUB_REPOSITORY`)
           cd $REPO_NAME
 
+          echo "########################################################################"
+          echo "# Checking for policy projects to be encoded as CP4i Configurations"
+          echo "########################################################################"
           ./find-and-convert-policies.sh
+          echo "########################################################################"
+          echo "# Checking for server.conf.yamls to be encoded as CP4i Configurations"
+          echo "########################################################################"
           ./find-and-convert-serverconf.sh
 
           # Check to see if anything changed
           if [ `git status --porcelain=1 | grep generated | wc -l` -ne 0 ]; then
-            echo "Generated files changed - creating and pushing git commit"
-            git add . 
-            git status
-            git remote -v
             export DATE=$(date '+%Y%m%d%H%M%S')
             export COMMIT=$(git log -1 --pretty=%h)
             export TAG="$DATE"-"$COMMIT"
-            git commit -m "Generator commit $TAG" && git push 
+            export MSG="Generator commit $TAG"
+            echo "########################################################################"
+            echo "# Generated files changed - creating and pushing git commit:"
+            echo "# $MSG"
+            echo "########################################################################"
+            git add . 
+            git status
+            git remote -v
+            git commit -m "$MSG" && git push 
           else
-            echo "Nothing new generated - not creating a new git commit"
+            echo "########################################################################"
+            echo "# Nothing new generated - not creating a new git commit"
+            echo "########################################################################"
           fi
