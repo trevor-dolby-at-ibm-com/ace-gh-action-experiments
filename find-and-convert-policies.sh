@@ -1,4 +1,33 @@
 #!/bin/bash
+#########################################################################
+# This script looks for ACE policy projects and converts them to the CP4i
+# Configuration format. CP4i expects the policy content to be zipped up,
+# base64 encoded, and then placed into a Configuration YAML that looks 
+# like this:
+# 
+# apiVersion: appconnect.ibm.com/v1beta1
+# kind: Configuration
+# metadata:
+#   name: example-policyproject
+# spec:
+#   contents: UEsDBAoAAAAAAE18WVkAAAAAAAA ...
+#   description: "Example policyproject"
+#   type: policyproject
+#   version: 12.0.12-r1
+#
+# The Configuration YAML can then be handed to Kubernetes (in a specific
+# namespace) so it can be attached to one or more IntegrationRuntimes.
+#
+# ZIP files store both content and metadata so this script cannot just
+# always create the Configuration and rely on git comparing the generated 
+# Configuration YAML against the previous version: "git clone" will set
+# the timestamp on the source *.policyxml files during the extract, and
+# so the generated ZIP file will always be different.
+#
+# This script therefore extracts the previous ZIP file from the existing
+# Configuration YAML so it can compare the actual files inside the ZIP.
+#########################################################################
+
 
 export POLICYFILES=$(find * -type f -name "policy.descriptor" -print)
 
@@ -16,14 +45,19 @@ for policyFile in $POLICYFILES; do
   export generatedPolicyName=$(echo "${policyParentName}/${lcPolicyDirName}-policyproject-generated.yaml")
   export configurationName=$(echo "${lcPolicyDirName}-policyproject")
 
+  echo $policyDirName
+  echo $policyParentName
+  echo $lcPolicyDirName
+  echo $generatedPolicyName
+  echo $configurationName
   # We only want to update the ZIP file if the contents of the files have changed (we don't
   # want to always create a new Configuration every time even if nothing has changed) but 
   # ZIP files contain the file timestamps so we can't just create a new ZIP file and compare
   # it to the old one because the file times will change.
-  TMPDIR=`mktemp -d`
-  
+
   # Assume we do not need to rebuild
   policyHasChanged=0
+  TMPDIR=`mktemp -d`
   if [ -e "$generatedPolicyName" ]; then
     echo "Configuration YAML $generatedPolicyName already exists; checking to see if it needs updating"
     grep contents: $generatedPolicyName  | tr -d ' ' | sed 's/contents://g' | base64 -d > $TMPDIR/policies.zip
