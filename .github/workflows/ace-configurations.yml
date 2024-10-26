@@ -61,6 +61,10 @@ jobs:
           echo "########################################################################"
           ./find-and-convert-policies.sh
           echo "########################################################################"
+          echo "# Checking for policy projects to be encoded as CP4i Configurations (2nd)"
+          echo "########################################################################"
+          ./find-and-convert-policies.sh --include-parent-dir
+          echo "########################################################################"
           echo "# Checking for server.conf.yamls to be encoded as CP4i Configurations"
           echo "########################################################################"
           ./find-and-convert-serverconf.sh
