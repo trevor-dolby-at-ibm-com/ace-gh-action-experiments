@@ -29,6 +29,12 @@
 #########################################################################
 
 
+if [ "$1" == "--include-parent-dir" ]; then
+  includeParentDir=1
+else
+  includeParentDir=0
+fi 
+
 export POLICYFILES=$(find * -type f -name "policy.descriptor" -print)
 
 for policyFile in $POLICYFILES; do
@@ -40,19 +46,33 @@ for policyFile in $POLICYFILES; do
   export policyParentName=$(dirname "$policyParentName")
   if [ "$policyParentName" == "" ]; then
     export policyParentName="."
+    # We don't really have a parent dir, so we re-use the policy directory
+    export policyParentDir="$policyDirName"
+  else
+    export policyParentDir=$(basename "$policyParentName")
   fi
   export lcPolicyDirName=$(echo "${policyDirName}" | tr '[A-Z]' '[a-z]')
-  export generatedPolicyName=$(echo "${policyParentName}/${lcPolicyDirName}-policyproject-generated.yaml")
-  export configurationName=$(echo "${lcPolicyDirName}-policyproject")
-
+  if [ "$includeParentDir" == "0" ]; then
+    export generatedPolicyName=$(echo "${policyParentName}/${lcPolicyDirName}-policyproject-generated.yaml")
+    export configurationName=$(echo "${lcPolicyDirName}-policyproject")
+  else
+    policyGrandparentName=$(dirname "$policyParentName")
+    export generatedPolicyName=$(echo "${policyGrandparentName}/${policyParentDir}-${lcPolicyDirName}-policyproject-generated.yaml")
+    export configurationName=$(echo "${policyParentDir}-${lcPolicyDirName}-policyproject")
+  fi
   # Expected values for various variables, starting from this repo 
   # with the policy project in subdir/level1/RemoteMQ:
   # 
   # policyDirName=RemoteMQ
   # policyParentName=subdir/level1
+  # policyParentDir=level1
   # lcPolicyDirName=remotemq
   # generatedPolicyName=subdir/level1/remotemq-policyproject-generated.yaml
   # configurationName=remotemq-policyproject
+  # 
+  # If includeParentDir has been set, then the last two are
+  # generatedPolicyName=subdir/level1-remotemq-policyproject-generated.yaml
+  # configurationName=level1-remotemq-policyproject
 
 
 
