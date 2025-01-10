@@ -10,3 +10,4 @@ Events:
       enabled: true            # Set true or false, default false
       format: 'MonitoringEventV2'                # Set string or none
       outputFormat: 'xml'       # Set comma separated list of one or more of : json,xml. Defaults to 'xml'
+
