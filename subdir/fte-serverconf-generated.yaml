@@ -4,6 +4,6 @@ metadata:
   name: fte-serverconf
 spec:
   contents: LS0tCnJlbW90ZURlZmF1bHRRdWV1ZU1hbmFnZXI6ICd7TVFQb2xpY2llc306RlRFUU0nCiMgQ2hhbmdlClJlc291cmNlTWFuYWdlcnM6CiAgRlRFQWdlbnQ6CiAgICBjb29yZGluYXRpb25RTWdyOiAnRlRFUU0nCiAgICBhZ2VudENvbmZpZ3VyYXRpb25EaXJlY3Rvcnk6ICcvdG1wL2dpdC9hY2UtZnRlLW5vZGVzLWV4YW1wbGUvZmlsZXMnCiAgICBhZ2VudE5hbWU6ICdERU1PQUdFTlQnCg==
-  description: "fte-serverconf server.conf.yaml"
+  description: "fte-serverconf server.conf.yaml - 7d78f6bbfef1293e6912fec591d743d14aa5b9ca9440fcf6927f82dd887c9711"
   type: serverconf
   version: 12.0.12-r1
