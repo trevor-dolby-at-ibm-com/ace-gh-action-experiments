@@ -1,6 +1,6 @@
 ---
 remoteDefaultQueueManager: '{MQPolicies}:FTEQM'
-# Change
+# Change to test generator
 ResourceManagers:
   FTEAgent:
     coordinationQMgr: 'FTEQM'
