@@ -4,7 +4,7 @@
     <connection>CCDT</connection>
     <destinationQueueManagerName>prefixTestQM</destinationQueueManagerName>
     <queueManagerHostname></queueManagerHostname>
-    <listenerPortNumber>12007</listenerPortNumber>
+    <listenerPortNumber>12008</listenerPortNumber>
     <channelName></channelName>
     <securityIdentity></securityIdentity>
     <useSSL>false</useSSL>
