@@ -11,12 +11,18 @@
 #   name: example-policyproject
 # spec:
 #   contents: UEsDBAoAAAAAAE18WVkAAAAAAAA ...
-#   description: "Example policyproject"
+#   description: "Example policyproject - 20241124010203"
 #   type: policyproject
 #   version: 12.0.12-r1
 #
 # The Configuration YAML can then be handed to Kubernetes (in a specific
 # namespace) so it can be attached to one or more IntegrationRuntimes.
+#
+# Adding the date field into the description allows ArgoCD to notice 
+# changes even if the "contents" field is being ignored; this can happen
+# when using workdiroverride Configurations as the contents are moved to
+# a secret, and ArgoCD may have to be told to ignore the contents of all
+# Configuration objects in order to avoid them being constantly out of sync.
 #
 # ZIP files store both content and metadata so this script cannot just
 # always create the Configuration and rely on git comparing the generated 
@@ -129,6 +135,7 @@ for policyFile in $POLICYFILES; do
   if [ "$policyHasChanged" == "0" ]; then
     echo "No changes found; not rebuilding the Configuration"
   else
+    export DATE=$(date '+%Y%m%d%H%M%S')
     echo "Generating $generatedPolicyName from ${policyParentName}/${policyDirName}"
     cat << EOF > $generatedPolicyName
 apiVersion: appconnect.ibm.com/v1beta1
@@ -137,7 +144,7 @@ metadata:
   name: ${configurationName}
 spec:
   contents: $(cd ${policyParentName} && zip -r - ${policyDirName} | base64 -w0)
-  description: "${configurationName}"
+  description: "${configurationName} - ${DATE}"
   type: policyproject
   version: 12.0.12-r1
 EOF
